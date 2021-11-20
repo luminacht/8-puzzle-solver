@@ -28,11 +28,11 @@ struct Node
 // Function to print N x N matrix
 int printMatrix(int mat[N][N])
 {
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < 3; i++)
     {
-        for (int j = 0; j < N; j++)
-            printf("%d ", mat[i][j]);
-        printf("\n");
+        for (int j = 0; j < 3; j++)
+            printf("| %d ", mat[i][j]);
+        printf("| \n");
     }
 }
 
@@ -172,8 +172,8 @@ int main()
     /* 2D array declaration*/
     int initial[N][N];
     /*Counter variables for the loop*/
-    int i, j;
-    int tempCheck[9] = {0};
+    char i, j;
+    char tempCheck[9] = {0};
 
     for(i=0; i<N; i++) {
         for(j=0;j<N;j++) {
@@ -187,31 +187,54 @@ int main()
                     tempCheck[temp] = 1;
                 }
             else {
-                    printf("    ERROR: Number %d is already used. Try again with different input.\n", temp);
+                    printf("   ERROR: Number %d is already used. Try again with different input.\n", temp);
                     --j;
                 }
             else {
-                printf("    ERROR: Invalid input. Enter a number from 0 to 8.\n");
+                printf("   ERROR: Invalid input. Enter a number from 0 to 8.\n");
                 --j;
-                
+
             }
         }
     }
 
+    printMatrix(initial);
+
     // Solvable Final configuration
     // Value 0 is used for empty space
-    int final[N][N] =
-            {
-                    {1, 2, 3},
-                    {5, 8, 6},
-                    {0, 7, 4}
-            };
+    int goal[N][N];
+    char goalTemp[9] = {0};
+
+    for(i=0; i<N; i++) {
+        for(j=0;j<N;j++) {
+            int temp;
+            printf("Enter value for goal[%d][%d]:", i, j);
+            scanf("%d", &temp);
+
+            if (temp >= 0 && temp < 9)
+                if(!goalTemp[temp]) {
+                    goal[i][j] = temp;
+                    goalTemp[temp] = 1;
+                }
+            else {
+                    printf("   ERROR: Number %d is already used. Try again with different input.\n", goal);
+                    --j;
+                }
+            else {
+                printf("   ERROR: Invalid input. Enter a number from 0 to 8.\n");
+                --j;
+
+            }
+        }
+    }
+
+    printMatrix(goal);
 
     // Blank tile coordinates in initial
     // configuration
     int x = 1, y = 2;
 
- solve(initial, x, y, final);
+ // solve(initial, x, y, final);
 
     return 0;
 }
