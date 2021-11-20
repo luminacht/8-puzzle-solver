@@ -193,6 +193,7 @@ int main()
             else {
                 printf("    ERROR: Invalid input. Enter a number from 0 to 8.\n");
                 --j;
+                
             }
         }
     }
