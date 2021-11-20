@@ -173,6 +173,8 @@ int main()
     int initial[N][N];
     /*Counter variables for the loop*/
     int i, j;
+    int tempCheck[9] = {0};
+
     for(i=0; i<N; i++) {
         for(j=0;j<N;j++) {
             while(1) {
@@ -180,14 +182,19 @@ int main()
             printf("Enter value for initial[%d][%d]:", i, j);
             scanf("%d", &temp);
 
-            if (temp > 0 && temp < 9)
-            {
-            initial[i][j] = temp;
-            break;
+            if (temp >= 0 && temp < 9)
+                if(!tempCheck[temp]) {
+                    initial[i][j] = temp;
+                    tempCheck[temp] = 1;
+                }
+            else {
+                    printf("    ERROR: Number %d is already used. Try again with different input.\n", temp);
+                    --j;
+                }
+            else {
+                printf("    ERROR: Invalid input. Enter a number from 0 to 8.\n");
+                --j;
             }
-            else if 
-            printf("Input a value from 0 to 8");
-            
         }
     }
 
@@ -207,4 +214,5 @@ int main()
  solve(initial, x, y, final);
 
     return 0;
+}
 }
