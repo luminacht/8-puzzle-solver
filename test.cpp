@@ -177,7 +177,6 @@ int main()
 
     for(i=0; i<N; i++) {
         for(j=0;j<N;j++) {
-            while(1) {
             int temp;
             printf("Enter value for initial[%d][%d]:", i, j);
             scanf("%d", &temp);
@@ -214,5 +213,4 @@ int main()
  solve(initial, x, y, final);
 
     return 0;
-}
 }
