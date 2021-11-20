@@ -1,73 +1,98 @@
-#include <iostream>
+// Program to print path from root node to destination node
+// for N*N -1 puzzle algorithm using Branch and Bound
+// The solution assumes that instance of puzzle is solvable
 #include <bits/stdc++.h>
-#include <ctime>
 using namespace std;
+#define N 3
+#define BLANK_CHARACTER '0'
 
-// Graph class represents a directed graph using adjacency
-// list representation.
-class Graph
-{
-	int V; // No. of vertices
+typedef enum Move {
+    UP, DOWN, LEFT, RIGHT, //values for moving up, down, left, right, respectively
+    NOT_APPLICABLE         //value assigned for initial and goal input states
+} Move;
 
-	// Pointer to an array containing
-	// adjacency lists
-	list<int> *adj;
+typedef struct State {
+    Move action;           //action that resulted to this board state
+    char mat[N][N];      //resulting board configuration after applying action
+} State;
 
-	// A function used by IDDFS
-	bool DLS(int v, int target, int limit);
+void inputState(State * const state) {
 
-public:
-	Graph(int V); // Constructor
-	void addEdge(int v, int w);
+    // Initial configuration
+    // Value 0 is used for empty space
+    /* 2D array declaration*/
+    /*Counter variables for the loop*/
+    char i, j;
+    char tempCheck[9] = {0};
+    state->action = NOT_APPLICABLE;
 
-	// IDDFS traversal of the vertices reachable from v
-	bool IDDFS(int v, int target, int max_depth);
-};
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            int temp;
+            printf("matrix[%d][%d]:", i, j);
+            scanf("%d", &temp);
 
-Graph::Graph(int V)
-{
-	this->V = V;
-	adj = new list<int>[V];
+            if (temp >= 0 && temp < 9)
+                if (!tempCheck[temp]) {
+                    state->mat[i][j] = temp;
+                    tempCheck[temp] = 1;
+                } else {
+                    printf("   ERROR: Number %d is already used. Try again with different input.\n", temp);
+                    --j;
+                }
+            else {
+                printf("   ERROR: Invalid input. Enter a number from 0 to 8.\n");
+                --j;
+
+            }
+        }
+    }
 }
 
-void Graph::addEdge(int v, int w)
+// Function to print N x N matrix
+void printMatrix(char const mat[N][N])
 {
-	adj[v].push_back(w); // Add w to v’s list.
+    printf("\n");
+    for (char i = 0; i < N; i++)
+    {
+        for (char j = 0; j < N; j++)
+            printf("| %d ", mat[i][j]);
+        printf("| \n");
+    }
+    printf("\n");
 }
 
-// A function to perform a Depth-Limited search
-// from given source 'src'
-bool Graph::DLS(int src, int target, int limit)
+// Function to calculate the number of misplaced tiles
+// ie. number of non-blank tiles not in their goal position
+int calculateCost(int initial[N][N], int final[N][N])
 {
-	if (src == target)
-		return true;
-
-	// If reached the maximum depth, stop recursing.
-	if (limit <= 0)
-		return false;
-
-	// Recur for all the vertices adjacent to source vertex
-	for (auto i = adj[src].begin(); i != adj[src].end(); ++i)
-	if (DLS(*i, target, limit-1) == true)
-		return true;
-
-	return false;
+    int count = 0;
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            if (initial[i][j] && initial[i][j] != final[i][j])
+                count++;
+    return count;
 }
 
-// IDDFS to search if target is reachable from v.
-// It uses recursive DFSUtil().
-bool Graph::IDDFS(int src, int target, int max_depth)
+// Function to check if (x, y) is a valid matrix coordinate
+int isSafe(int x, int y)
 {
-	// Repeatedly depth-limit search till the
-	// maximum depth.
-	for (int i = 0; i <= max_depth; i++)
-	if (DLS(src, target, i) == true)
-		return true;
-
-	return false;
+    return (x >= 0 && x < N && y >= 0 && y < N);
 }
 
-int main(){
+// Driver code
+int main()
+{
+    State initial;
+    State goal;
 
+    printf("Initial Board State: \n");
+    inputState(&initial);
+    printMatrix(initial.mat);
+
+    printf("Desired Goal State: \n");
+    inputState(&goal);
+    printMatrix(goal.mat);
+
+    return 0;
 }
-
