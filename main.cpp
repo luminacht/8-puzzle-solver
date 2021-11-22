@@ -3,9 +3,28 @@
 // The solution assumes that instance of puzzle is solvable
 #include <bits/stdc++.h>
 #include <list>
+#include <algorithm>
+#include <stdio.h>
+
 using namespace std;
 #define N 3
 #define BLANK '0'
+
+class Node
+{
+public:
+    Node *parent;
+    char mat[N][N];
+    int g, h, t;
+    void Heuristics();
+    void Astar();
+    bool calculateCost();
+    bool InClosed();
+};
+
+list<Node> closed, fringe;
+Node start, ending, cur, temp;
+int nodeCount;
 
 typedef enum Moves
 {
@@ -16,16 +35,10 @@ typedef enum Moves
     INPUT  //value assigned for initial and goal input states
 } Moves;
 
-class Node;
-
 typedef struct State
 {
-    Moves action;   //action that resulted to this board state
-    char mat[N][N]; //resulting board configuration after applying action
-    Node *parent;
+    Moves action; //action that resulted to this board state
 } State;
-
-list<Node> closed, fringe;
 
 typedef struct Solution
 {
@@ -33,7 +46,7 @@ typedef struct Solution
     struct Solution *next;
 } Solution;
 
-void inputState(State *const state)
+int inputState(State *const state)
 {
 
     // Initial configuration
@@ -41,26 +54,26 @@ void inputState(State *const state)
     /* 2D array declaration*/
     /*Counter variables for the loop*/
     char i, j;
-    char tempCheck[9] = {0};
+    char holdCheck[9] = {0};
     state->action = INPUT;
 
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
         {
-            int temp;
+            int holder;
             printf("matrix[%d][%d]:", i, j);
-            scanf("%d", &temp);
+            scanf("%d", &holder);
 
-            if (temp >= 0 && temp < 9)
-                if (!tempCheck[temp])
+            if (holder >= 0 && holder < 9)
+                if (!holdCheck[holder])
                 {
-                    state->mat[i][j] = temp;
-                    tempCheck[temp] = 1;
+                    temp.mat[i][j] = holder;
+                    holdCheck[holder] = 1;
                 }
                 else
                 {
-                    printf("   ERROR: Number %d is already used. Try again with different input.\n", temp);
+                    printf("   ERROR: Number %d is already used. Try again with different input.\n", holder);
                     --j;
                 }
             else
@@ -87,20 +100,83 @@ void printMatrix(char const mat[N][N])
 
 // Function to calculate the number of misplaced tiles
 // ie. number of non-blank tiles not in their goal position
-int calculateCost(int initial[N][N], int final[N][N])
+bool calculateCost()
 {
-    int count = 0;
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
-            if (initial[i][j] && initial[i][j] != final[i][j])
-                count++;
-    return count;
+            if (cur.mat[i][j] && cur.mat[i][j] == ending.mat[i][j])
+                return true;
+}
+
+void Astar()
+{
+    cur = start;
+    fringe.push_front(cur);
+    while (true)
+    {
+        // process all states in the fringe.
+        cur = fringe.front();
+        for (list<Node>::iterator it = fringe.begin(); it != fringe.end(); ++it)
+        {
+            // find the state with the minimum total cost.
+            if ((*it) < cur)
+            { //using the state < operator..
+                cur = (*it);
+            }
+        }
+        // if minimal total cost state is the goal.
+        if (cur.calculateCost())
+        {
+            // print the solution path.
+            cout << "Cost: " << cur.g << "\n";
+            cout << "Nodes expanded: " << nodeCount << "\n";
+            // exit the function.
+            return;
+        } // if the minimal total cost state is not the goal.
+        else
+        {
+            // expand it;
+            nodeCount++;
+            Expand();
+        }
+    }
+}
+
+// state heuristic cost calculator.
+void Node::Heuristics()
+{
+    int i, i2, j, j2, Heuristic = 0;
+    bool found;
+    for (i = 0; i < N; i++)
+    {
+        for (j = 0; j < N; j++)
+        {
+            found = false;
+            for (i2 = 0; i2 < N; i2++)
+            {
+                for (j2 = 0; j2 < N; j2++)
+                {
+                    // finding similar elements.
+                    if (ending.mat[i][j] == mat[i2][j2])
+                    {
+                        //Manhattan Based Heuristic displacement cost.
+                        Heuristic += abs(i - i2) + abs(j - j2);
+                        found = true;
+                    }
+                    if (found)
+                        break;
+                }
+                if (found)
+                    break;
+            }
+        }
+    } // setting the state heuristic cost.
+    h = Heuristic;
 }
 
 // State Expanding Function.
 void Expand()
 {
-    State cur, temp;
 
     //add current state to the closed list.
     closed.push_back(cur);
@@ -126,7 +202,7 @@ void Expand()
                     {
                         //set remaining elements
                         temp.g += 1;
-                        temp.Heurs();
+                        temp.Heuristics();
                         temp.t = temp.g + temp.h;
                         fringe.push_front(temp); //push the child into the fringe list
                                                  //space++;//increment the space counter
@@ -142,7 +218,7 @@ void Expand()
                     if (!InClosed(temp))
                     {
                         temp.g += 1;
-                        temp.Heurs();
+                        temp.Heuristics();
                         temp.t = temp.g + temp.h;
                         fringe.push_front(temp);
                         //space++;
@@ -157,7 +233,7 @@ void Expand()
                     if (!InClosed(temp))
                     {
                         temp.g += 1;
-                        temp.Heurs();
+                        temp.Heuristics();
                         temp.t = temp.g + temp.h;
                         fringe.push_front(temp);
                         //space++;
@@ -172,7 +248,7 @@ void Expand()
                     if (!InClosed(temp))
                     {
                         temp.g += 1;
-                        temp.Heurs();
+                        temp.Heuristics();
                         temp.t = temp.g + temp.h;
                         fringe.push_front(temp);
                         //space++;
@@ -185,6 +261,18 @@ void Expand()
     fringe.remove(cur);
 }
 
+bool InClosed(Node &s)
+{
+    for (list<Node>::iterator it = closed.begin(); it != closed.end(); ++it)
+    {
+        if ((*it) == s)
+        { //using the state == operator
+            return true;
+        }
+    }
+    return false;
+}
+
 // Driver code
 int main()
 {
@@ -193,11 +281,29 @@ int main()
 
     printf("Initial Board State: \n");
     inputState(&initial);
-    printMatrix(initial.mat);
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            start.mat[i][j] = temp.mat[i][j];
+        }
+    }
+
+    printMatrix(start.mat);
 
     printf("Desired Goal State: \n");
     inputState(&goal);
-    printMatrix(goal.mat);
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            ending.mat[i][j] = temp.mat[i][j];
+        }
+    }
+
+    printMatrix(ending.mat);
 
     return 0;
 }
