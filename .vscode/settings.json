@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "*.tcc": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "array": "cpp",
+    "initializer_list": "cpp",
+    "limits": "cpp",
+    "memory_resource": "cpp",
+    "stop_token": "cpp",
+    "regex": "cpp",
+    "type_traits": "cpp",
+    "valarray": "cpp"
+  }
+}
