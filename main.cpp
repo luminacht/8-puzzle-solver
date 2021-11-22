@@ -7,27 +7,34 @@ using namespace std;
 #define N 3
 #define BLANK '0'
 
-typedef enum Moves {
-    UP, DOWN, LEFT, RIGHT, //values for moving up, down, left, right, respectively
-    INPUT         //value assigned for initial and goal input states
+typedef enum Moves
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT, //values for moving up, down, left, right, respectively
+    INPUT  //value assigned for initial and goal input states
 } Moves;
-
-typedef struct State {
-    Moves action;           //action that resulted to this board state
-    char mat[N][N];      //resulting board configuration after applying action
-    Node *parent;
-} State;
 
 class Node;
 
+typedef struct State
+{
+    Moves action;   //action that resulted to this board state
+    char mat[N][N]; //resulting board configuration after applying action
+    Node *parent;
+} State;
+
 list<Node> closed, fringe;
 
-typedef struct Solution {
+typedef struct Solution
+{
     Moves action;
     struct Solution *next;
 } Solution;
 
-void inputState(State * const state) {
+void inputState(State *const state)
+{
 
     // Initial configuration
     // Value 0 is used for empty space
@@ -37,24 +44,29 @@ void inputState(State * const state) {
     char tempCheck[9] = {0};
     state->action = INPUT;
 
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < N; j++) {
+    for (i = 0; i < N; i++)
+    {
+        for (j = 0; j < N; j++)
+        {
             int temp;
             printf("matrix[%d][%d]:", i, j);
             scanf("%d", &temp);
 
             if (temp >= 0 && temp < 9)
-                if (!tempCheck[temp]) {
+                if (!tempCheck[temp])
+                {
                     state->mat[i][j] = temp;
                     tempCheck[temp] = 1;
-                } else {
+                }
+                else
+                {
                     printf("   ERROR: Number %d is already used. Try again with different input.\n", temp);
                     --j;
                 }
-            else {
+            else
+            {
                 printf("   ERROR: Invalid input. Enter a number from 0 to 8.\n");
                 --j;
-
             }
         }
     }
