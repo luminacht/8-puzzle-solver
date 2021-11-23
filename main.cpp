@@ -92,7 +92,10 @@ void printMatrix(char const mat[N][N])
     for (char i = 0; i < N; i++)
     {
         for (char j = 0; j < N; j++)
-            printf("| %d ", mat[i][j]);
+            if (mat[i][j] == '0')
+                printf("|  ");
+            else
+                printf("| %d ", mat[i][j]);
         printf("| \n");
     }
     printf("\n");
