@@ -10,6 +10,7 @@ using namespace std;
 
 bool aSearch = false;
 int Goal[n][n];
+const char *action[4] = {"UP", "DOWN", "LEFT", "RIGHT"};
 
 //tracks generated nodes in search process
 int nodes = 0;
@@ -229,9 +230,9 @@ void Expand() {
 void PrintPath(State *s) {
 
 	int counter = 0;
-	const char *action[4] = {"UP", "DOWN", "LEFT", "RIGHT"};
 	int sg = s->g;
 	int temp[sg];
+    int hold;
 
 	for(s; s; s = s->parent, counter++)
 	{
@@ -240,8 +241,8 @@ void PrintPath(State *s) {
 
 	for(int i = 1; i < sg + 1; i++)
 	{
-		int hold = temp[sg - i];
-		printf("%d. %s \n", i, action[hold]);
+		hold = temp[sg - i];
+		printf("%d. %s \n", i, action[temp[sg - i]]);
 	}
 }
 
