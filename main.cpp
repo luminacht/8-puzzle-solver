@@ -8,7 +8,7 @@
 
 using namespace std;
 
-bool search = false;
+bool aSearch = false;
 int Goal[n][n];
 
 //tracks generated nodes in search process
@@ -73,7 +73,7 @@ int main() {
             IterativeDepthFirstSearch();
             break;
         case 2:
-            search = true;
+            aSearch = true;
             timer = (clock() * 1000) / CLOCKS_PER_SEC;
             Astar();
     }
@@ -175,13 +175,7 @@ void Expand() {
                         temp_state.manhattanHeuristic();
                         temp_state.total_cost = temp_state.g + temp_state.h;
 						temp_state.moves = 0;
-
-						if (search) {
-                            active_list.push_back(temp_state);
-                        }
-                        else {
-                            active_list.push_front(temp_state);
-                        }
+                        active_list.push_front(temp_state);
                     }
                 }
                 //if not in last row
@@ -195,13 +189,7 @@ void Expand() {
                         temp_state.manhattanHeuristic();
                         temp_state.total_cost = temp_state.g + temp_state.h;
 						temp_state.moves = 1;
-
-						if (search) {
-                            active_list.push_back(temp_state);
-                        }
-                        else {
-                            active_list.push_front(temp_state);
-                        }
+                        active_list.push_front(temp_state);
                     }
                 }
                 // if not in the first column
@@ -215,13 +203,7 @@ void Expand() {
                         temp_state.manhattanHeuristic();
                         temp_state.total_cost = temp_state.g + temp_state.h;
 						temp_state.moves = 2;
-
-						if (search) {
-                            active_list.push_back(temp_state);
-                        }
-                        else {
-                            active_list.push_front(temp_state);
-                        }
+                        active_list.push_front(temp_state);
                     }
                 }// if not in the last column
                 if (j < n - 1) {
@@ -234,13 +216,7 @@ void Expand() {
                         temp_state.manhattanHeuristic();
                         temp_state.total_cost = temp_state.g + temp_state.h;
 						temp_state.moves = 3;
-
-						 if (search) {
-                            active_list.push_back(temp_state);
-                        }
-                        else {
-                            active_list.push_front(temp_state);
-                        }
+                        active_list.push_front(temp_state);
                     }
                 }
             }
@@ -262,7 +238,7 @@ void PrintPath(State *s) {
 		temp[counter] = s->moves;
 	}
 
-	for(int i = 1; i < sg; i++)
+	for(int i = 1; i < sg + 1; i++)
 	{
 		int hold = temp[sg - i];
 		printf("%d. %s \n", i, action[hold]);

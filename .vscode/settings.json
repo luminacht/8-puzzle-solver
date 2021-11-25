@@ -1,7 +1,0 @@
-{
-  "files.associations": {
-    "*.html": "html",
-    "exception": "cpp",
-    "typeinfo": "cpp"
-  }
-}

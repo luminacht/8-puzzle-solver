@@ -2,7 +2,7 @@
 using namespace std;
 
 extern int Goal[n][n];
-extern bool search;
+extern bool aSearch;
 
 class State {
 public:
@@ -75,7 +75,7 @@ bool State::operator==(const State &r) const {
 
 bool State::operator<(const State &r) const {
 
-    if (search) { // for heuristic based algorithms
+    if (aSearch) { // for heuristic based algorithms
         return total_cost < r.total_cost;
     }
     else {
