@@ -15,13 +15,13 @@ void inputState()
         for (j = 0; j < n; j++)
         {
             int holder;
-            cout << "matrix["<<i<<"]["<<j<<"]:";
+            cout << "matrix[" << i << "][" << j << "]:";
             scanf("%d", &holder);
 
             if (holder >= 0 && holder < 9)
                 if (!holdCheck[holder])
                 {
-                    temp_state.A[i][j] = holder;
+                    temp_state.s[i][j] = holder;
                     holdCheck[holder] = 1;
                 }
                 else
@@ -39,16 +39,16 @@ void inputState()
 }
 
 // Function to print N x N matrix
-void printMatrix(int const A[n][n])
+void printMatrix(int const s[n][n])
 {
     printf("\n");
     for (int i = 0; i < n; i++)
     {
         for (char j = 0; j < n; j++)
-            if (A[i][j] == '0')
+            if (s[i][j] == '0')
                 printf("|  ");
             else
-                printf("| %d ", A[i][j]);
+                printf("| %d ", s[i][j]);
         printf("| \n");
     }
     printf("\n");
