@@ -12,9 +12,9 @@ bool search = false;
 int Goal[n][n];
 
 //tracks generated nodes in search process
-int nodes = 1;
+int nodes = 0;
 //tracks runtime of search
-int runtime = 1, timer = 0;
+int runtime = 0, timer = 0;
 
 void IterativeDepthFirstSearch();
 void Astar();
@@ -98,15 +98,16 @@ void IterativeDepthFirstSearch() {
                 runtime = ((clock() * 1000) / CLOCKS_PER_SEC) - timer;
                 //print the search costs
                 cout << "\nTime = " << runtime << "ms\n";
-                cout << "Nodes = " << nodes << "\n";
+                cout << "Nodes Expanded = " << nodes << "\n";
                 cout << "Moves = " << current_state.g << "\n";
-                //print the solution path
-                cout << "Path: ";
+                cout << "Solution Path: \n";
                 PrintPath(&current_state);
+                //print the solution path
                 return;
             } //continue searching child nodes if depth not reached
 
             else if (depth > current_state.g) {
+                nodes++;
                 Expand();
             }
             else {
@@ -139,14 +140,15 @@ void Astar() {
             // calculate and print the search costs
             runtime = ((clock() * 1000) / CLOCKS_PER_SEC) - timer;
             cout << "\nTime = " << runtime << "ms\n";
-            cout << "Nodes = " << nodes << "\n";
+            cout << "Nodes Expanded = " << nodes << "\n";
             cout << "Moves = " << current_state.g << "\n";
-            // print the solution path
-            cout << "Solution Path: ";
+            cout << "Solution Path: \n";
             PrintPath(&current_state);
+            // print the solution path
             return;
         }
         else { //continue searching child nodes
+            nodes++;
             Expand();
         }
     }
@@ -180,8 +182,6 @@ void Expand() {
                         else {
                             active_list.push_front(temp_state);
                         }
-
-                        nodes++;
                     }
                 }
                 //if not in last row
@@ -202,7 +202,6 @@ void Expand() {
                         else {
                             active_list.push_front(temp_state);
                         }
-                        nodes++;
                     }
                 }
                 // if not in the first column
@@ -223,7 +222,6 @@ void Expand() {
                         else {
                             active_list.push_front(temp_state);
                         }
-                        nodes++;
                     }
                 }// if not in the last column
                 if (j < n - 1) {
@@ -243,7 +241,6 @@ void Expand() {
                         else {
                             active_list.push_front(temp_state);
                         }
-                        nodes++;
                     }
                 }
             }
@@ -252,7 +249,6 @@ void Expand() {
 
     active_list.remove(current_state);
 }
-
 
 void PrintPath(State *s) {
 
@@ -266,17 +262,10 @@ void PrintPath(State *s) {
 		temp[counter] = s->moves;
 	}
 
-	for(int i = 1; i < sg + 1; i++)
+	for(int i = 1; i < sg; i++)
 	{
 		int hold = temp[sg - i];
-		if(i + 1 != sg + 1)
-		{
-			printf("%s - ", action[hold]);
-		}
-		else
-		{
-			printf("%s ", action[hold]);
-		}
+		printf("%d. %s \n", i, action[hold]);
 	}
 }
 

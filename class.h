@@ -6,7 +6,7 @@ extern bool search;
 
 class State {
 public:
-    int A[n][n], g, h, total_cost, heuristic_select;
+    int A[n][n], g, h, total_cost;
     State *parent;
     int moves;
 
@@ -14,9 +14,7 @@ public:
     bool is_goal();
     bool operator==(const State &) const;
     bool operator<(const State &) const;
-    void print(); 
-    //Heuristic Functions
-    int manhattanHeuristic();
+    void manhattanHeuristic();
 };
 
 State::State() {
@@ -24,7 +22,7 @@ State::State() {
     parent = NULL;
 }
 
-int State::manhattanHeuristic() {
+void State::manhattanHeuristic() {
     int h_val = 0;
     bool found;
     for (int i = 0; i < n; i++) {
@@ -46,7 +44,7 @@ int State::manhattanHeuristic() {
             }
         }
     }
-    return h_val;
+    h = h_val;
 }
 
 bool State::is_goal() {
@@ -83,16 +81,6 @@ bool State::operator<(const State &r) const {
     else {
         return g < r.g; // for normal search algorithms
     }
-}
-
-void State::print() {
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++)
-            cout << A[i][j] << ' ';
-        cout << endl;
-    }
-    cout << endl;
 }
 
 list< State > closed_list, active_list;
