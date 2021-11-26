@@ -1,3 +1,8 @@
+/* Nestor Rafael Oscillada
+   Paul Marren Claveron
+   Lestor Bonto
+   Jan Vincent Rada */
+
 #include <iostream>
 #include <list>
 #include <ctime>

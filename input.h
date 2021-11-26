@@ -15,7 +15,7 @@ void inputState()
         for (j = 0; j < n; j++)
         {
             int holder;
-            cout << "matrix[" << i << "][" << j << "]:";
+            cout << "matrix" << i << "][" << j << "]:";
             scanf("%d", &holder);
 
             if (holder >= 0 && holder < 9)
