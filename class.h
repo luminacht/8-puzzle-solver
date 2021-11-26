@@ -11,9 +11,9 @@ public:
     State *parent;        // The parent state
     int s[n][n];          // The state of the puzzle
     int moves;            // The number of moves to reach this state
-    int g, h, total_cost; // g: cost from initial state to this state
+    int g, h, totalCost; // g: cost from initial state to this state
                           // h: heuristic cost from this state to goal state
-                          // total_cost: g + h
+                          // totalCost: g + h
 
     State();        // Default constructor for State
     bool is_goal(); // Check if this state is the goal state
@@ -24,7 +24,7 @@ public:
 
 State::State()
 {
-    g = h = total_cost = 0; // Initialize g, h, and total_cost
+    g = h = totalCost = 0; // Initialize g, h, and totalCost
     parent = NULL;          // Initialize parent
 }
 
@@ -97,7 +97,7 @@ bool State::operator<(const State &r) const
 
     if (aSearch)
     { // for heuristic based algorithms
-        return total_cost < r.total_cost;
+        return totalCost < r.totalCost;
     }
     else
     {
@@ -105,5 +105,5 @@ bool State::operator<(const State &r) const
     }
 }
 
-list<State> closed_list, active_list; // closed list and active list for fringe
+list<State> closedList, fringeList; // closed list and active list for fringe
 State startState, currentState, tempState;

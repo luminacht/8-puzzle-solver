@@ -23,7 +23,7 @@ int nodes = 0;
 int runtime = 0, timer = 0;
 
 //Declaration of the functions for searching, expanding, and printing
-void IterativeDepthFirstSearch();
+void IDS();
 void Astar();
 void Expand();
 void PrintPath(State *s);
@@ -66,25 +66,25 @@ int main()
 
 //Asks the user to input the type of search to be performed
 ask:
-    int search_select;
+    int select;
     cout << "Select Algorithm:" << endl;
     cout << "1. Iterative Deepening Search" << endl;
     cout << "2. A* Search" << endl;
     cout << "> ";
-    cin >> search_select;
+    cin >> select;
 
     //initialize start state
     startState.g = 0;                                    // start at root node
     startState.manhattanHeuristic();                     //set heuristic value
-    startState.total_cost = startState.g + startState.h; //total cost
+    startState.totalCost = startState.g + startState.h; //total cost
     startState.parent = NULL;                            // root node
 
     //selecting the search algorithm
-    switch (search_select)
+    switch (select)
     {
     case 1:
         timer = (clock() * 1000) / CLOCKS_PER_SEC;
-        IterativeDepthFirstSearch();
+        IDS();
         break;
     case 2:
         aSearch = true;
@@ -99,19 +99,19 @@ ask:
 }
 
 //Function for Iterative Deepening Search
-void IterativeDepthFirstSearch()
+void IDS()
 {
 
     int depth = 0;
-    cout << "\nStarting Iterative Depth First Search Algorithm... \n";
+    cout << "\nInitiatizing Iterative Deepening Search: \n";
     while (true)
     {
         currentState = startState;            //set current state to start state
-        active_list.push_front(currentState); //add current state to active list
-        while (!active_list.empty())          //while active list is not empty
+        fringeList.push_front(currentState); //add current state to fringe list
+        while (!fringeList.empty())          //while fringe list is not empty
         {
 
-            currentState = active_list.front(); //set current state to front of active list
+            currentState = fringeList.front(); //set current state to front of fringe list
 
             if (currentState.is_goal()) //checks whether the current state already reached the goal
             {
@@ -133,12 +133,12 @@ void IterativeDepthFirstSearch()
             }
             else
             {
-                active_list.pop_front(); //remove the current state from active list
+                fringeList.pop_front(); //remove the current state from fringe list
             }
         }
         // clear both lists for the next round
-        active_list.clear();
-        closed_list.clear();
+        fringeList.clear();
+        closedList.clear();
         // increase the search depth
         depth++;
     }
@@ -147,14 +147,14 @@ void IterativeDepthFirstSearch()
 //Function for A* Search
 void Astar()
 {
-    cout << "\nStarting A* Algorithm... \n";
+    cout << "\nInitializing A* Search: \n";
     currentState = startState;            //set current state to start state
-    active_list.push_front(currentState); //add current state to active list
+    fringeList.push_front(currentState); //add current state to fringe list
     while (true)
     {
 
-        currentState = active_list.front();
-        for (list<State>::iterator it = active_list.begin(); it != active_list.end(); ++it)
+        currentState = fringeList.front();
+        for (list<State>::iterator it = fringeList.begin(); it != fringeList.end(); ++it)
         {
             // find state with minimum total cost
             if ((*it) < currentState)
@@ -185,7 +185,7 @@ void Astar()
 void Expand()
 {
 
-    closed_list.push_back(currentState);
+    closedList.push_back(currentState);
 
     for (int i = 0; i < n; i++)
     {
@@ -199,7 +199,7 @@ void Expand()
                 {
                     //set child
                     tempState = currentState;
-                    tempState.parent = &(closed_list.back());
+                    tempState.parent = &(closedList.back());
                     // shift blank tile UP
                     swap(tempState.s[i][j], tempState.s[i - 1][j]);
                     // search for the child in the closed list
@@ -208,63 +208,63 @@ void Expand()
                     {
                         tempState.g += 1;
                         tempState.manhattanHeuristic();
-                        tempState.total_cost = tempState.g + tempState.h;
+                        tempState.totalCost = tempState.g + tempState.h;
                         tempState.moves = 0;
-                        active_list.push_front(tempState);
+                        fringeList.push_front(tempState);
                     }
                 }
                 //if not in last row
                 if (i < n - 1)
                 {
                     tempState = currentState;
-                    tempState.parent = &(closed_list.back());
+                    tempState.parent = &(closedList.back());
                     //shift the blank tile DOWN
                     swap(tempState.s[i][j], tempState.s[i + 1][j]);
                     if (!InClosed(tempState))
                     {
                         tempState.g += 1;
                         tempState.manhattanHeuristic();
-                        tempState.total_cost = tempState.g + tempState.h;
+                        tempState.totalCost = tempState.g + tempState.h;
                         tempState.moves = 1;
-                        active_list.push_front(tempState);
+                        fringeList.push_front(tempState);
                     }
                 }
                 // if not in the first column
                 if (j > 0)
                 {
                     tempState = currentState;
-                    tempState.parent = &(closed_list.back());
+                    tempState.parent = &(closedList.back());
                     // shift blank tile LEFT
                     swap(tempState.s[i][j], tempState.s[i][j - 1]);
                     if (!InClosed(tempState))
                     {
                         tempState.g += 1;
                         tempState.manhattanHeuristic();
-                        tempState.total_cost = tempState.g + tempState.h;
+                        tempState.totalCost = tempState.g + tempState.h;
                         tempState.moves = 2;
-                        active_list.push_front(tempState);
+                        fringeList.push_front(tempState);
                     }
                 } // if not in the last column
                 if (j < n - 1)
                 {
                     tempState = currentState;
-                    tempState.parent = &(closed_list.back());
+                    tempState.parent = &(closedList.back());
                     // shift blank tile RIGHT
                     swap(tempState.s[i][j], tempState.s[i][j + 1]);
                     if (!InClosed(tempState))
                     {
                         tempState.g += 1;
                         tempState.manhattanHeuristic();
-                        tempState.total_cost = tempState.g + tempState.h;
+                        tempState.totalCost = tempState.g + tempState.h;
                         tempState.moves = 3;
-                        active_list.push_front(tempState);
+                        fringeList.push_front(tempState);
                     }
                 }
             }
         }
     }
-    //remove the current state from the active list
-    active_list.remove(currentState);
+    //remove the current state from the fringe list
+    fringeList.remove(currentState);
 }
 
 void PrintPath(State *s)
@@ -290,7 +290,7 @@ void PrintPath(State *s)
 //Function to check whether the state is in the closed list
 bool InClosed(State &s)
 {
-    for (list<State>::iterator it = closed_list.begin(); it != closed_list.end(); ++it) //iterate through the closed list
+    for (list<State>::iterator it = closedList.begin(); it != closedList.end(); ++it) //iterate through the closed list
     {
         if ((*it) == s) //if the state is found in the closed list
         {

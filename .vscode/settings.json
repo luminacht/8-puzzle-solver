@@ -1,9 +1,0 @@
-{
-  "files.associations": {
-    "*.module": "php",
-    "*.html": "html",
-    "*.tcc": "cpp",
-    "iostream": "cpp"
-  },
-  "C_Cpp.errorSquiggles": "Disabled"
-}
