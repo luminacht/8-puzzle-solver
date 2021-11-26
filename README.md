@@ -27,6 +27,7 @@ state can be any desired input as long as it follows the [rules](https://www.gee
 
 > In the source code, "0" is used as the representation for the blank tile.
 
+
 **INITIAL STATES**:
 
 <table>
@@ -154,7 +155,7 @@ state can be any desired input as long as it follows the [rules](https://www.gee
   </tr>
 </table>
 
-### Notes
+## Notes
 
 The result proves that A* Search is faster compared to IDS which is true with the stated
 time complexities, where A* time complexity is exponential to the heuristics given whilst
