@@ -40,13 +40,13 @@ int main()
     {
         for (int j = 0; j < n; j++)
         {
-            start_state.s[i][j] = temp_state.s[i][j];
+            startState.s[i][j] = tempState.s[i][j];
         }
     }
 
     //Displays the initial state of the puzzle
     cout << "\nInitial Board:";
-    printMatrix(start_state.s);
+    printMatrix(startState.s);
 
     //Asks the user to input the goal state of the puzzle
     cout << "Desired Goal State: << \n";
@@ -56,7 +56,7 @@ int main()
     {
         for (int j = 0; j < n; j++)
         {
-            Goal[i][j] = temp_state.s[i][j];
+            Goal[i][j] = tempState.s[i][j];
         }
     }
 
@@ -74,10 +74,10 @@ ask:
     cin >> search_select;
 
     //initialize start state
-    start_state.g = 0;                                      // start at root node
-    start_state.manhattanHeuristic();                       //set heuristic value
-    start_state.total_cost = start_state.g + start_state.h; //total cost
-    start_state.parent = NULL;                              // root node
+    startState.g = 0;                                    // start at root node
+    startState.manhattanHeuristic();                     //set heuristic value
+    startState.total_cost = startState.g + startState.h; //total cost
+    startState.parent = NULL;                            // root node
 
     //selecting the search algorithm
     switch (search_select)
@@ -106,27 +106,27 @@ void IterativeDepthFirstSearch()
     cout << "\nStarting Iterative Depth First Search Algorithm... \n";
     while (true)
     {
-        current_state = start_state;           //set current state to start state
-        active_list.push_front(current_state); //add current state to active list
-        while (!active_list.empty())           //while active list is not empty
+        currentState = startState;            //set current state to start state
+        active_list.push_front(currentState); //add current state to active list
+        while (!active_list.empty())          //while active list is not empty
         {
 
-            current_state = active_list.front(); //set current state to front of active list
+            currentState = active_list.front(); //set current state to front of active list
 
-            if (current_state.is_goal()) //checks whether the current state already reached the goal
+            if (currentState.is_goal()) //checks whether the current state already reached the goal
             {
                 runtime = ((clock() * 1000) / CLOCKS_PER_SEC) - timer; //calculates the total runtime of the search
                 //print the search costs
                 cout << "\nTime = " << runtime << "ms\n";
                 cout << "Nodes Expanded = " << nodes << "\n";
-                cout << "Moves = " << current_state.g << "\n";
+                cout << "Moves = " << currentState.g << "\n";
                 cout << "Solution Path: \n";
-                PrintPath(&current_state);
+                PrintPath(&currentState);
                 //print the solution path
                 return;
             } //continue searching child nodes
 
-            else if (depth > current_state.g) //if depth not reached yet
+            else if (depth > currentState.g) //if depth not reached yet
             {
                 nodes++;
                 Expand(); //expand the current state
@@ -148,30 +148,30 @@ void IterativeDepthFirstSearch()
 void Astar()
 {
     cout << "\nStarting A* Algorithm... \n";
-    current_state = start_state;           //set current state to start state
-    active_list.push_front(current_state); //add current state to active list
+    currentState = startState;            //set current state to start state
+    active_list.push_front(currentState); //add current state to active list
     while (true)
     {
 
-        current_state = active_list.front();
+        currentState = active_list.front();
         for (list<State>::iterator it = active_list.begin(); it != active_list.end(); ++it)
         {
             // find state with minimum total cost
-            if ((*it) < current_state)
+            if ((*it) < currentState)
             {
-                current_state = (*it);
+                currentState = (*it);
             }
         }
 
-        if (current_state.is_goal()) //checks whether the current state already reached the goal
+        if (currentState.is_goal()) //checks whether the current state already reached the goal
         {
             // calculate and print the search costs
             runtime = ((clock() * 1000) / CLOCKS_PER_SEC) - timer;
             cout << "\nTime = " << runtime << "ms\n";
             cout << "Nodes Expanded = " << nodes << "\n";
-            cout << "Moves = " << current_state.g << "\n";
+            cout << "Moves = " << currentState.g << "\n";
             cout << "Solution Path: \n";
-            PrintPath(&current_state);
+            PrintPath(&currentState);
             // print the solution path
             return;
         }
@@ -185,86 +185,86 @@ void Astar()
 void Expand()
 {
 
-    closed_list.push_back(current_state);
+    closed_list.push_back(currentState);
 
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
         {
             //find blank tile in state array
-            if (current_state.s[i][j] == 0)
+            if (currentState.s[i][j] == 0)
             {
                 // if not in the first row
                 if (i > 0)
                 {
                     //set child
-                    temp_state = current_state;
-                    temp_state.parent = &(closed_list.back());
+                    tempState = currentState;
+                    tempState.parent = &(closed_list.back());
                     // shift blank tile UP
-                    swap(temp_state.s[i][j], temp_state.s[i - 1][j]);
+                    swap(tempState.s[i][j], tempState.s[i - 1][j]);
                     // search for the child in the closed list
                     // if the child not found in the closed list
-                    if (!InClosed(temp_state))
+                    if (!InClosed(tempState))
                     {
-                        temp_state.g += 1;
-                        temp_state.manhattanHeuristic();
-                        temp_state.total_cost = temp_state.g + temp_state.h;
-                        temp_state.moves = 0;
-                        active_list.push_front(temp_state);
+                        tempState.g += 1;
+                        tempState.manhattanHeuristic();
+                        tempState.total_cost = tempState.g + tempState.h;
+                        tempState.moves = 0;
+                        active_list.push_front(tempState);
                     }
                 }
                 //if not in last row
                 if (i < n - 1)
                 {
-                    temp_state = current_state;
-                    temp_state.parent = &(closed_list.back());
+                    tempState = currentState;
+                    tempState.parent = &(closed_list.back());
                     //shift the blank tile DOWN
-                    swap(temp_state.s[i][j], temp_state.s[i + 1][j]);
-                    if (!InClosed(temp_state))
+                    swap(tempState.s[i][j], tempState.s[i + 1][j]);
+                    if (!InClosed(tempState))
                     {
-                        temp_state.g += 1;
-                        temp_state.manhattanHeuristic();
-                        temp_state.total_cost = temp_state.g + temp_state.h;
-                        temp_state.moves = 1;
-                        active_list.push_front(temp_state);
+                        tempState.g += 1;
+                        tempState.manhattanHeuristic();
+                        tempState.total_cost = tempState.g + tempState.h;
+                        tempState.moves = 1;
+                        active_list.push_front(tempState);
                     }
                 }
                 // if not in the first column
                 if (j > 0)
                 {
-                    temp_state = current_state;
-                    temp_state.parent = &(closed_list.back());
+                    tempState = currentState;
+                    tempState.parent = &(closed_list.back());
                     // shift blank tile LEFT
-                    swap(temp_state.s[i][j], temp_state.s[i][j - 1]);
-                    if (!InClosed(temp_state))
+                    swap(tempState.s[i][j], tempState.s[i][j - 1]);
+                    if (!InClosed(tempState))
                     {
-                        temp_state.g += 1;
-                        temp_state.manhattanHeuristic();
-                        temp_state.total_cost = temp_state.g + temp_state.h;
-                        temp_state.moves = 2;
-                        active_list.push_front(temp_state);
+                        tempState.g += 1;
+                        tempState.manhattanHeuristic();
+                        tempState.total_cost = tempState.g + tempState.h;
+                        tempState.moves = 2;
+                        active_list.push_front(tempState);
                     }
                 } // if not in the last column
                 if (j < n - 1)
                 {
-                    temp_state = current_state;
-                    temp_state.parent = &(closed_list.back());
+                    tempState = currentState;
+                    tempState.parent = &(closed_list.back());
                     // shift blank tile RIGHT
-                    swap(temp_state.s[i][j], temp_state.s[i][j + 1]);
-                    if (!InClosed(temp_state))
+                    swap(tempState.s[i][j], tempState.s[i][j + 1]);
+                    if (!InClosed(tempState))
                     {
-                        temp_state.g += 1;
-                        temp_state.manhattanHeuristic();
-                        temp_state.total_cost = temp_state.g + temp_state.h;
-                        temp_state.moves = 3;
-                        active_list.push_front(temp_state);
+                        tempState.g += 1;
+                        tempState.manhattanHeuristic();
+                        tempState.total_cost = tempState.g + tempState.h;
+                        tempState.moves = 3;
+                        active_list.push_front(tempState);
                     }
                 }
             }
         }
     }
     //remove the current state from the active list
-    active_list.remove(current_state);
+    active_list.remove(currentState);
 }
 
 void PrintPath(State *s)

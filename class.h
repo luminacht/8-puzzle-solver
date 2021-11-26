@@ -106,4 +106,4 @@ bool State::operator<(const State &r) const
 }
 
 list<State> closed_list, active_list; // closed list and active list for fringe
-State start_state, current_state, temp_state, goal_state;
+State startState, currentState, tempState;

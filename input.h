@@ -21,7 +21,7 @@ void inputState()
             if (holder >= 0 && holder < 9)
                 if (!holdCheck[holder])
                 {
-                    temp_state.s[i][j] = holder;
+                    tempState.s[i][j] = holder;
                     holdCheck[holder] = 1;
                 }
                 else
