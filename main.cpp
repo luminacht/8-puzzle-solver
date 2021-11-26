@@ -33,7 +33,7 @@ int main()
 {
 
     //Asks the user to input the initial state of the puzzle
-    printf("Initial Board State: \n");
+    cout << "Initial Board State: \n";
     inputState(); //input the initial state
 
     for (int i = 0; i < n; i++)
@@ -49,7 +49,7 @@ int main()
     printMatrix(start_state.s);
 
     //Asks the user to input the goal state of the puzzle
-    printf("Desired Goal State: \n");
+    cout << "Desired Goal State: << \n";
     inputState();
 
     for (int i = 0; i < n; i++)
@@ -282,8 +282,8 @@ void PrintPath(State *s)
 
     for (int i = 1; i < sg + 1; i++) //reverse the temp array
     {
-        hold = temp[sg - i];                          //hold the value of the current index
-        printf("%d. %s \n", i, action[temp[sg - i]]); //print the move
+        hold = temp[sg - i];               //hold the value of the current index
+        cout << i << ". " << action[hold]; //print the move
     }
 }
 

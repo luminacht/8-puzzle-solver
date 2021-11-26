@@ -15,8 +15,8 @@ void inputState()
         for (j = 0; j < n; j++)
         {
             int holder;
-            cout << "matrix" << i << "][" << j << "]:";
-            scanf("%d", &holder);
+            cout << "Board [" << i << "][" << j << "]:";
+            cin >> holder;
 
             if (holder >= 0 && holder < 9)
                 if (!holdCheck[holder])
@@ -26,12 +26,13 @@ void inputState()
                 }
                 else
                 {
-                    printf("   ERROR: Number %d is already used. Try again with different input.\n", holder);
+                    cout << "   ERROR: Number " << holder << "is already used. Try again with different input.\n"
+                         << holder;
                     --j;
                 }
             else
             {
-                printf("   ERROR: Invalid input. Enter a number from 0 to 8.\n");
+                cout << "   ERROR: Invalid input. Enter a number from 0 to 8. \n";
                 --j;
             }
         }
@@ -41,15 +42,15 @@ void inputState()
 // Function to print N x N matrix
 void printMatrix(int const s[n][n])
 {
-    printf("\n");
+    cout << "\n";
     for (int i = 0; i < n; i++)
     {
         for (char j = 0; j < n; j++)
             if (s[i][j] == '0')
-                printf("|  ");
+                cout << "|  ";
             else
-                printf("| %d ", s[i][j]);
-        printf("| \n");
+                cout << "| " << s[i][j] << " ";
+        cout << "| \n";
     }
-    printf("\n");
+    cout << "\n";
 }
