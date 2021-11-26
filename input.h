@@ -45,7 +45,7 @@ void printMatrix(int const s[n][n])
     cout << "\n";
     for (int i = 0; i < n; i++)
     {
-        for (char j = 0; j < n; j++)
+        for (int j = 0; j < n; j++)
             if (s[i][j] == '0')
                 cout << "|  ";
             else
