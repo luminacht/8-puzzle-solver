@@ -15,7 +15,7 @@ void inputState()
         for (j = 0; j < n; j++)
         {
             int holder;
-            cout << "Board[" << i << "][" << j << "]:";
+            cout << "Boards[" << i << "][" << j << "]:";
             cin >> holder;
 
             if (holder >= 0 && holder < 9)

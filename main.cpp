@@ -26,8 +26,8 @@ int runtime = 0, timer = 0;
 void IDS();
 void Astar();
 void Expand();
-void PrintPath(State *s);
-bool InClosed(State &s);
+void PrintPath(State *r);
+bool InClosed(State &r);
 
 int main()
 {
@@ -267,32 +267,32 @@ void Expand()
     fringeList.remove(currentState);
 }
 
-void PrintPath(State *s)
+void PrintPath(State *r)
 {
     //print the solution path
     int counter = 0;
-    int sg = s->g; //set the current state's g value
-    int temp[sg];  //create a temporary array to store the solution path
+    int rg = r->g; //set the current state's g value
+    int temp[rg];  //create a temporary array to store the solution path
     int hold;      //hold the value of the current state's g value
 
-    for (s; s; s = s->parent, counter++) //while the parent of the current state is not null
+    for (r; r; r = r->parent, counter++) //while the parent of the current state is not null
     {
-        temp[counter] = s->moves; //add the move to the temp array
+        temp[counter] = r->moves; //add the move to the temp array, this is to reverse the order of the moves.
     }
 
-    for (int i = 1; i < sg + 1; i++) //reverse the temp array
+    for (int i = 1; i < rg + 1; i++) 
     {
-        hold = temp[sg - i];               //hold the value of the current index
+        hold = temp[rg - i];               //hold the value of the current index
         cout << i << ". " << action[hold]; //print the move
     }
 }
 
 //Function to check whether the state is in the closed list
-bool InClosed(State &s)
+bool InClosed(State &r)
 {
     for (list<State>::iterator it = closedList.begin(); it != closedList.end(); ++it) //iterate through the closed list
     {
-        if ((*it) == s) //if the state is found in the closed list
+        if ((*it) == r) //if the state is found in the closed list
         {
             return true;
         }
