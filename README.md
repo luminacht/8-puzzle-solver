@@ -167,5 +167,6 @@ usage depends on the depth of the goal node(**_O(d)_**).
 
 > This test is executed on a 64-bit Windows 10 OS with an AMD Ryzen 5 3600
 > processor and 16 GB of RAM set at 3200hz
-> Coded and documented by @Lester105, @nibiru-rada, @raffittee, and @luminacht for a class
-> in Artificial Intelligence.
+
+Coded and documented by @Lester105, @nibiru-rada, @raffittee, and @luminacht for a class
+in Artificial Intelligence.
