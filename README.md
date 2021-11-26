@@ -18,12 +18,12 @@ start from and there is a given goal state for the puzzle to achieve.
 
 A puzzle configuration is considered as solvable, if there exists a sequence of actions,
 which leads to the goal configuration. This holds true for exactly half of all possible puzzle
-configurations as stated on this [paper][1] and from MathWorld's [explanation][2] on n-puzzles.
+configurations as stated on this [paper](https://mediatum.ub.tum.de/doc/1283911/1283911.pdf) and from MathWorld's [explanation](https://mathworld.wolfram.com/15Puzzle.html) on n-puzzles.
 
 ## Test States
 
 These are the input states used during our execution of the program. The preferred initial
-state can be any desired input as long as it follows the [rules][3] for initial state selection.
+state can be any desired input as long as it follows the [rules](https://www.geeksforgeeks.org/check-instance-8-puzzle-solvable/) for initial state selection.
 
 > In the source code, "0" is used as the representation for the blank tile.
 
@@ -154,7 +154,7 @@ state can be any desired input as long as it follows the [rules][3] for initial 
   </tr>
 </table>
 
-##### Notes
+### Notes
 
 The result proves that A* Search is faster compared to IDS which is true with the stated
 time complexities, where A* time complexity is exponential to the heuristics given whilst
@@ -169,7 +169,3 @@ usage depends on the depth of the goal node(**_O(d)_**).
 
 > Coded and documented by @Lester105, @nibiru-rada, @raffittee, and @luminacht for a class
 > in Artificial Intelligence.
-
-[1]https://mediatum.ub.tum.de/doc/1283911/1283911.pdf
-[2]https://mathworld.wolfram.com/15Puzzle.html
-[3]https://www.geeksforgeeks.org/check-instance-8-puzzle-solvable/
