@@ -113,8 +113,7 @@ state can be any desired input as long as it follows the [rules](https://www.gee
     </td>
     <td>
     <table>
-        <caption>PREFERRED INITIAL 
-          STATE</caption>
+        <caption>PREFERRED</caption>
         <tr>
           <td>3</td>
           <td>6</td>
